@@ -85,6 +85,93 @@ Data61/CSIRO\\ % Your institution for the title page
 \end{frame}
 
 
+\begin{frame}
+
+Type classes are a language feature
+
+\begin{itemize}
+\item Haskell
+\item Eta
+\item Clean
+\end{itemize}
+
+\pause
+
+or sometimes a design pattern
+
+\begin{itemize}
+\item Scala
+\item OCaml
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+Let's go beyond the basics of type classes
+\end{frame}
+
+
+%%% Polymorphism
+
+
+\begin{frame}
+\begin{center}
+\huge{Polymorphism}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+Polymorphism is good
+
+
+\begin{itemize}
+\item greater reuse
+\item less repetition
+\item fewer names need inventing
+\item fewer possible implementations
+\end{itemize}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+Broadly speaking there are two major forms of polymorphism:
+
+\begin{itemize}
+\item {\it parametric} polymorphism
+\item {\it ad-hoc} polymorphism
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+
+\frametitle{Parametric polymorphism (sometimes called {\it generics})}
+
+A function is parametricly polymorphic iff it can be called at different types,
+and always do the same thing.
+
+% TODO clarify or correct this slide
+\begin{code}
+reverse :: [a] -> [a]
+\end{code}
+
+\pause
+
+Parametric polymorpism is great, but it's not the focus of this talk
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Ad-hoc polymorphism}
+
+
+
+\end{frame}
 
 \end{document} 
 

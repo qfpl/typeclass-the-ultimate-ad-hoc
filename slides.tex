@@ -41,7 +41,19 @@
   morestring=[b]"""
 }
 
+% TODO syntax highlighting
 \lstnewenvironment{code}{
+  \lstset{
+    language=haskell,
+    basicstyle=\small\ttfamily,
+    stringstyle=\color{olive}\ttfamily,
+    escapeinside={*@}{@*},
+    showstringspaces=false
+  }
+}{}
+
+% TODO fix this
+\lstnewenvironment{java}{
   \lstset{
     language=haskell,
     basicstyle=\small\ttfamily,
@@ -92,6 +104,7 @@ Type classes are a language feature
 \begin{itemize}
 \item Haskell
 \item Eta
+\item Purescript
 \item Clean
 \end{itemize}
 
@@ -151,26 +164,85 @@ Broadly speaking there are two major forms of polymorphism:
 
 \frametitle{Parametric polymorphism (sometimes called {\it generics})}
 
-A function is parametricly polymorphic iff it can be called at different types,
-and always do the same thing.
-
 % TODO clarify or correct this slide
+A value is parametrically polymorphic iff it has at least one {\it type parameter}
+which can be instantiated to {\it any type}.
+
+\nl
+
+Parametrically polymorphic functions behave the same way no matter which type
+they are instantiated to.
+
+\pnl
+
 \begin{code}
 reverse :: [a] -> [a]
+id :: a -> a
+(.) :: (b -> c) -> (a -> b) -> a -> c
 \end{code}
-
-\pause
-
-Parametric polymorpism is great, but it's not the focus of this talk
 
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Ad-hoc polymorphism}
 
+A value which is ad-hocly polymorphic can be instantiated to different types,
+
+and may behave differently at each type
+
+\end{frame}
 
 
+\begin{frame}[fragile]
+
+\begin{code}
+(==) :: Eq a => a -> a -> Bool
+\end{code}
+
+\pnl
+
+\begin{code}
+eqBool :: Bool -> Bool -> Bool
+eqBool True True   = True
+eqBool False False = True
+eqBool False True  = False
+eqBool True False  = False
+\end{code}
+
+\pnl
+
+\begin{code}
+eqString :: String -> String -> Bool
+eqString []      []     = True
+eqString (_: _)  []     = False
+eqString []      (_: _) = False
+eqString (c:cs)  (d:ds) = eqChar c d && eqString cs ds
+\end{code}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{java}
+interface Monoid<A> {
+  public static final A empty;
+  public static A append(A a1, A a2);
+}
+\end{java}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{java}
+public class String implements Monoid {
+  private char[] value;
+
+  ... other definitions ...
+
+
+}
+\end{java}
 \end{frame}
 
 \end{document} 

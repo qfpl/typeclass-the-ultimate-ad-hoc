@@ -9,3 +9,7 @@
 *.bbl
 *.blg
 *.vrb
+*.pyg
+*.class
+/_minted-slides/
+

@@ -19,6 +19,7 @@
 \usepackage{listings}
 \usepackage{framed}
 \usepackage{courier}
+\usepackage{minted}
 
 \hypersetup{colorlinks=false}
 
@@ -30,39 +31,8 @@
 \beamertemplatenavigationsymbolsempty
 \setbeamertemplate{footline}{}
 
-\lstdefinelanguage{haskell}{
-  morekeywords={class,instance,where,do,data,newtype,default,deriving,module,import,qualified,as},
-  otherkeywords={<-},
-  sensitive=true,
-  morecomment=[l]{--},
-  morecomment=[n]{\{-}{-\}},
-  morestring=[b]",
-  morestring=[b]',
-  morestring=[b]"""
-}
-
-% TODO syntax highlighting
-\lstnewenvironment{code}{
-  \lstset{
-    language=haskell,
-    basicstyle=\small\ttfamily,
-    stringstyle=\color{olive}\ttfamily,
-    escapeinside={*@}{@*},
-    showstringspaces=false
-  }
-}{}
-
-% TODO fix this
-\lstnewenvironment{java}{
-  \lstset{
-    language=haskell,
-    basicstyle=\small\ttfamily,
-    stringstyle=\color{olive}\ttfamily,
-    escapeinside={*@}{@*},
-    showstringspaces=false
-  }
-}{}
-
+\newminted{haskell}{}
+\newminted{java}{}
 
 \definecolor{g}{RGB}{0,100,0}
 \newcommand{\highlight}[1]{\colorbox{yellow}{#1}}
@@ -175,11 +145,11 @@ they are instantiated to.
 
 \pnl
 
-\begin{code}
+\begin{haskellcode}
 reverse :: [a] -> [a]
 id :: a -> a
 (.) :: (b -> c) -> (a -> b) -> a -> c
-\end{code}
+\end{haskellcode}
 
 \end{frame}
 
@@ -196,54 +166,80 @@ and may behave differently at each type
 
 \begin{frame}[fragile]
 
-\begin{code}
+\begin{haskellcode}
 (==) :: Eq a => a -> a -> Bool
-\end{code}
+\end{haskellcode}
 
 \pnl
 
-\begin{code}
+\begin{haskellcode}
 eqBool :: Bool -> Bool -> Bool
 eqBool True True   = True
 eqBool False False = True
 eqBool False True  = False
 eqBool True False  = False
-\end{code}
+\end{haskellcode}
 
 \pnl
 
-\begin{code}
+\begin{haskellcode}
 eqString :: String -> String -> Bool
 eqString []      []     = True
 eqString (_: _)  []     = False
 eqString []      (_: _) = False
 eqString (c:cs)  (d:ds) = eqChar c d && eqString cs ds
-\end{code}
+\end{haskellcode}
 
 \end{frame}
 
 
 \begin{frame}[fragile]
-\begin{java}
-interface Monoid<A> {
-  public static final A empty;
-  public static A append(A a1, A a2);
+\begin{javacode}
+public interface Equal<A> {
+  public boolean eq(A other);
 }
-\end{java}
+\end{javacode}
+
+\pause
+
+\begin{javacode}
+public class Person implements Equal<Person> {
+  public int age;
+  public String name;
+
+  public boolean eq(Person other) {
+    return this.age == other.age && this.name.equals(other.name);
+  }
+}
+\end{javacode}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+import java.util.List;
+
+public class EqualMethods {
+  public static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
+    for (A element : list) {
+      if (a.eq(element)) return true;
+    }
+    return false;
+  }
+}
+\end{javacode}
+
+elementOf exhibits ad-hoc polymorphism
+
 \end{frame}
 
 
 \begin{frame}[fragile]
-\begin{java}
-public class String implements Monoid {
-  private char[] value;
-
-  ... other definitions ...
-
-
-}
-\end{java}
+\begin{minted}{haskell}
+class Eq a where
+  (==) :: a -> a -> Bool
+\end{minted}
 \end{frame}
 
 \end{document} 
-

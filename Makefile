@@ -1,11 +1,11 @@
-all: CLEAN slides
+all: clean slides
 
 SLIDES_TEX = slides.tex
 SLIDES_PDF = slides.pdf
 LATEX = pdflatex -shell-escape
 LATEX_SLIDES = $(LATEX) $(SLIDES_TEX)
 
-.PHONY: slides spell open edit o clean CLEAN
+.PHONY: slides spell open edit o clean
 
 slides: slides.pdf
 
@@ -26,8 +26,5 @@ edit: $(SLIDES_TEX)
 o: open
 
 clean:
-	rm -rf *.loc *.toc *.log *.idx *.aux *.out *.nav *.snm *.vrb *.blg *.bbl
-
-CLEAN: clean
-	rm *.pdf
+	rm -rf *.pdf *.loc *.toc *.log *.idx *.aux *.out *.nav *.snm *.vrb *.blg *.bbl
 

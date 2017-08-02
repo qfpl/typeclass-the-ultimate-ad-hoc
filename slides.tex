@@ -193,6 +193,13 @@ eqString (c:cs)  (d:ds) = eqChar c d && eqString cs ds
 \end{frame}
 
 
+\begin{frame}
+\begin{center}
+\huge{Interfaces}
+\end{center}
+\end{frame}
+
+
 \begin{frame}[fragile]
 \begin{javacode}
 public interface Equal<A> {
@@ -235,11 +242,44 @@ elementOf exhibits ad-hoc polymorphism
 \end{frame}
 
 
-\begin{frame}[fragile]
-\begin{minted}{haskell}
-class Eq a where
-  (==) :: a -> a -> Bool
-\end{minted}
+\begin{frame}
+\begin{center}
+\huge{Type Classes}
+\end{center}
 \end{frame}
+
+
+\begin{frame}[fragile]
+\begin{haskellcode}
+class Equal a where
+  eq :: a -> a -> Bool
+\end{haskellcode}
+
+\pnl
+
+\begin{haskellcode}
+data Person = Person {
+  age :: Int
+, name :: String
+}
+\end{haskellcode}
+
+\pnl
+
+\begin{haskellcode}
+instance Equal Person where
+  eq p1 p2 = eq (age p1) (age p2) && eq (name p1) (name p2)
+\end{haskellcode}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{haskellcode}
+elementOf :: Equal a => a -> [a] -> Bool
+elementOf a list = any (eq a) list
+\end{haskellcode}
+\end{frame}
+
 
 \end{document} 

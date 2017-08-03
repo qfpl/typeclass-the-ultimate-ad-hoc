@@ -33,6 +33,7 @@
 
 \newminted{haskell}{}
 \newminted{java}{}
+\newminted{scala}{}
 
 \definecolor{g}{RGB}{0,100,0}
 \newcommand{\highlight}[1]{\colorbox{yellow}{#1}}
@@ -115,8 +116,8 @@ Polymorphism is good
 
 
 \begin{itemize}
-\item less repetition
-\item greater reuse
+\item less duplication
+\item more reuse
 \item fewer possible implementations
 \end{itemize}
 \end{center}
@@ -151,7 +152,7 @@ which can be instantiated to {\it any type}.
 \begin{haskellcode}
 reverse :: [a] -> [a]
 id :: a -> a
-(.) :: (b -> c) -> (a -> b) -> a -> c
+(.) :: (b -> c) -> (a -> b) -> (a -> c)
 \end{haskellcode}
 
 \end{frame}
@@ -160,8 +161,8 @@ id :: a -> a
 \begin{frame}[fragile]
 \frametitle{Ad-hoc polymorphism}
 
-% TODO make a joke here
-A value which is ad-hocly polymorphic can be instantiated to different types,
+% TODO make a joke here about "ad-hocly"
+A type which is ad-hocly polymorphic can be instantiated to different types,
 
 and may behave differently at each type
 
@@ -212,6 +213,26 @@ elementOf a list = any (eq a) list
 \end{frame}
 
 
+\begin{frame}[fragile]
+Instances can be constrained
+
+\nl
+
+% TODO is this the right example for this?
+\begin{haskellcode}
+instance Equal a => Equal (Maybe a) where
+  eq Nothing  Nothing  = True
+  eq (Just x) (Just y) = True
+  eq (Just x) Nothing  = False
+  eq Nothing  (Just y) = False
+\end{haskellcode}
+
+\pnl
+
+We can add type class instances for types we didn't write
+\end{frame}
+
+
 %%%%%
 %%%%% INTERFACES SECTION
 %%%%%
@@ -246,10 +267,9 @@ class Person implements Equal<Person> {
 \end{frame}
 
 
-
 \begin{frame}[fragile]
 \begin{javacode}
-public static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
+static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
   for (A element : list) {
     if (a.eq(element)) return true;
   }
@@ -257,11 +277,24 @@ public static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
 }
 \end{javacode}
 
-%\nl
-%elementOf exhibits ad-hoc polymorphism
+\end{frame}
+
+
+\begin{frame}
 
 \end{frame}
 
+
+%%%%%
+%%%%% SCALA SECTION
+%%%%%
+
+
+\begin{frame}
+\begin{center}
+\huge{Implicits}
+\end{center}
+\end{frame}
 
 \end{document} 
 

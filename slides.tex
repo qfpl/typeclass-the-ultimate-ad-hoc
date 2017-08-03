@@ -171,7 +171,7 @@ and may behave differently at each type
 
 
 %%%%%
-%%%%% WHATE ARE TYPE CLASSES
+%%%%% WHAT ARE TYPE CLASSES
 %%%%%
 
 \begin{frame}
@@ -251,6 +251,14 @@ We can add type class instances for types we didn't write
 \item Instances can depend on other instances if necessary
 \end{itemize}
 
+\end{frame}
+
+
+\begin{frame}
+% TODO
+talk about where instances are allowed to be
+
+talk about orphan instances
 \end{frame}
 
 
@@ -497,6 +505,95 @@ implicit def orderPerson: Order[Person] = new Order[Person] {
 \end{scalacode}
 \end{frame}
 
+
+\begin{frame}[fragile]
+\begin{scalacode}
+def sort[A](list: List[A])(implicit orderA: Order[A]): List[A] = {
+  // quicksort goes here
+}
+\end{scalacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{scalacode}
+sort(
+  List(
+    Person(30, "Robert")
+  , Person(20, "John")
+  , Person(40, "Alfred")
+  )
+)
+\end{scalacode}
+
+\pnl
+
+\begin{scalacode}
+==>
+
+List(
+  Person(20, "John")
+, Person(30, "Robert")
+, Person(40, "Alfred")
+)
+\end{scalacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+Then the boss says ``I want those sorted by name''.
+
+\pnl
+
+\begin{scalacode}
+implicit def personOrderByName: Order[Person] = new Order[Person] {
+  def compare(a: Person, b: Person): Ordering =
+    stringOrder.compare(a.age, b.age)
+}
+\end{scalacode}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{scalacode}
+sort(
+  List(
+    Person(30, "Robert")
+  , Person(20, "John")
+  , Person(40, "Alfred")
+  )
+)
+\end{scalacode}
+
+\pnl
+
+\begin{scalacode}
+==>
+
+List(
+  Person(40, "Alfred")
+, Person(20, "John")
+, Person(30, "Robert")
+)
+
+\end{scalacode}
+\end{frame}
+
+
+\begin{frame}
+% TODO
+talk about how impossible it is to understand understand which implicit wins
+
+\nl
+
+show Set example about incoherence doing nasty things quietly
+
+\nl
+
+talk about applying discipline in scala to get coherence
+\end{frame}
 
 
 \end{document} 

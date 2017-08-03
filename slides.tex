@@ -171,8 +171,151 @@ and may behave differently at each type
 
 
 %%%%%
+%%%%% INTERFACES SECTION
+%%%%%
+
+
+\begin{frame}
+\begin{center}
+\huge{Interfaces}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+interface Equal<A> {
+  public boolean eq(A other);
+}
+\end{javacode}
+
+\pause
+
+\begin{javacode}
+class Person implements Equal<Person> {
+  public int age;
+  public String name;
+
+  public boolean eq(Person other) {
+    return this.age == other.age && this.name.equals(other.name);
+  }
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
+  for (A element : list) {
+    if (a.eq(element)) return true;
+  }
+  return false;
+}
+\end{javacode}
+
+\pnl
+
+\begin{javacode}
+elementOf(me, functionalProgrammers);
+// true
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+package java.lang;
+
+class String {
+  private char[] value;
+  // other definitions
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+package java.lang;
+
+class String implements Equal<String> {
+  private char[] value;
+  // other definitions
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> {
+  // implementation details
+
+
+
+
+
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> implements Equal<List<A>> {
+  // implementation details
+
+
+
+
+
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> implements Equal<List<A>> {
+  // implementation details
+
+  public boolean eq(List<A> other) {
+    // implementation...
+
+  }
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> implements Equal<List<A>> {
+  // implementation details
+
+  public boolean eq(List<A> other) {
+    // implementation...
+    // ... but how do we compare A for equality?
+  }
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}
+\begin{itemize}
+\item Interface implementation can't be conditional
+\item We can only implement interfaces for types we control
+\end{itemize}
+
+\end{frame}
+
+
+%%%%%
 %%%%% WHAT ARE TYPE CLASSES
 %%%%%
+
 
 \begin{frame}
 \begin{center}
@@ -259,141 +402,6 @@ We can add type class instances for types we didn't write
 talk about where instances are allowed to be
 
 talk about orphan instances
-\end{frame}
-
-
-%%%%%
-%%%%% INTERFACES SECTION
-%%%%%
-
-
-\begin{frame}
-\begin{center}
-\huge{Interfaces}
-\end{center}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-interface Equal<A> {
-  public boolean eq(A other);
-}
-\end{javacode}
-
-\pause
-
-\begin{javacode}
-class Person implements Equal<Person> {
-  public int age;
-  public String name;
-
-  public boolean eq(Person other) {
-    return this.age == other.age && this.name.equals(other.name);
-  }
-}
-\end{javacode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
-  for (A element : list) {
-    if (a.eq(element)) return true;
-  }
-  return false;
-}
-\end{javacode}
-
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-class String {
-  private char[] value;
-  // other definitions
-}
-\end{javacode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-class String implements Equal<String> {
-  private char[] value;
-  // other definitions
-}
-\end{javacode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-class List<A> {
-  // implementation details
-
-
-
-
-
-}
-\end{javacode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-class List<A> implements Equal<List<A>> {
-  // implementation details
-
-
-
-
-
-}
-\end{javacode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-class List<A> implements Equal<List<A>> {
-  // implementation details
-
-  public boolean eq(List<A> other) {
-    // implementation...
-
-  }
-}
-\end{javacode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-class List<A> implements Equal<List<A>> {
-  // implementation details
-
-  public boolean eq(List<A> other) {
-    // implementation...
-    // ... but how do we compare A for equality?
-  }
-}
-\end{javacode}
-\end{frame}
-
-
-\begin{frame}
-\begin{itemize}
-\item Interface implementation can't be conditional
-\item We can only implement interfaces for types we control
-\end{itemize}
-
-\nl
-
-I argue this makes type classes more modular and more flexible
 \end{frame}
 
 

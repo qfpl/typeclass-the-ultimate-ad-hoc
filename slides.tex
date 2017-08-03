@@ -209,7 +209,10 @@ instance Equal Person where
 \begin{frame}[fragile]
 \begin{haskellcode}
 elementOf :: Equal a => a -> [a] -> Bool
-elementOf a list = any (eq a) list
+elementOf a list =
+  case list of
+    []    -> False
+    (h:t) -> eq a h || elementOf a t
 \end{haskellcode}
 \end{frame}
 
@@ -219,13 +222,18 @@ Instances can be constrained
 
 \nl
 
-% TODO is this the right example for this?
+%instance Equal a => Equal (Maybe a) where
+%  eq Nothing  Nothing  = True
+%  eq (Just x) (Just y) = True
+%  eq (Just x) Nothing  = False
+%  eq Nothing  (Just y) = False
+
 \begin{haskellcode}
-instance Equal a => Equal (Maybe a) where
-  eq Nothing  Nothing  = True
-  eq (Just x) (Just y) = True
-  eq (Just x) Nothing  = False
-  eq Nothing  (Just y) = False
+instance (Equal a) => Equal [a] where
+  eq []     []     = True
+  eq (x:xs) []     = False
+  eq []     (y:ys) = False
+  eq (x:xs) (y:ys) = eq x y && eq xs ys
 \end{haskellcode}
 
 \pnl
@@ -235,8 +243,6 @@ We can add type class instances for types we didn't write
 
 
 \begin{frame}
-
-Advantages
 
 \begin{itemize}
 \item Writing an instance for your type can unlock many functions
@@ -331,7 +337,7 @@ class List<A> {
 
 \begin{frame}[fragile]
 \begin{javacode}
-class List<A> extends Equal<List<A>> {
+class List<A> implements Equal<List<A>> {
   // implementation details
 
 
@@ -345,7 +351,7 @@ class List<A> extends Equal<List<A>> {
 
 \begin{frame}[fragile]
 \begin{javacode}
-class List<A> extends Equal<List<A>> {
+class List<A> implements Equal<List<A>> {
   // implementation details
 
   public boolean eq(List<A> other) {
@@ -359,7 +365,7 @@ class List<A> extends Equal<List<A>> {
 
 \begin{frame}[fragile]
 \begin{javacode}
-class List<A> extends Equal<List<A>> {
+class List<A> implements Equal<List<A>> {
   // implementation details
 
   public boolean eq(List<A> other) {
@@ -383,6 +389,13 @@ I argue this makes type classes more modular and more flexible
 \end{frame}
 
 
+\begin{frame}
+%TODO
+TODO show why type classes aren't perfectly flexible
+
+(no custom local instances, maybe show newtypes for sum and product or something)
+\end{frame}
+
 %%%%%
 %%%%% SCALA SECTION
 %%%%%
@@ -395,8 +408,95 @@ I argue this makes type classes more modular and more flexible
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[fragile]
+\begin{scalacode}
+case class Person(age: Int, name: String)
+\end{scalacode}
+
+\pnl
+
+\begin{scalacode}
+trait Equal[A] {
+  def eq(a: A, b: A): Boolean
+}
+\end{scalacode}
+
+\pnl
+
+\begin{scalacode}
+implicit def equalPerson: Equal[Person] = new Equal[Person] {
+  def eq(a: Person, b: Person): Boolean =
+    a.age == b.age && a.name == b.name
+}
+\end{scalacode}
 \end{frame}
+
+
+\begin{frame}[fragile]
+\begin{scalacode}
+def elementOf[A](a: A, list: List[A])
+                (implicit equalA: Equal[A]): Boolean = {
+  list match {
+    case Nil => false
+    case (h::t) => equal.eq(a, h) || elementOf(a, t)
+  }
+}
+\end{scalacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{scalacode}
+implicit def equalList(implicit equalA: Equal[A]): Equal[List[A]] =
+  new Equal[List[A]] {
+    def eq(a: List[A], b: List[A]): Boolean = {
+      (a,b) match {
+        case (Nil,   Nil)   => true
+        case (x::xs, Nil)   => false
+        case (Nil,   y::ys) => false
+        case (x::xs, y::ys) => equalA.eq(x,y) || eq(xs,ys)
+      }
+    }
+  }
+\end{scalacode}
+\end{frame}
+
+
+\begin{frame}
+\begin{itemize}
+\item We can define implicits for types we did not write
+\item We can write implicits that depend on implicits
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{scalacode}
+sealed trait Ordering
+case object LT extends Ordering
+case object EQ extends Ordering
+case object GT extends Ordering
+
+
+trait Order[A] {
+  def compare(a: A, b: A): Ordering
+}
+\end{scalacode}
+
+\pnl
+
+\begin{scalacode}
+implicit def orderPerson: Order[Person] = new Order[Person] {
+  def compare(a: Person, b: Person): Ordering =
+    intOrder.compare(a.age, b.age) match {
+      case LT => LT
+      case EQ => stringOrder.compare(a.name, b.name)
+      case GT => GT
+    }
+}
+\end{scalacode}
+\end{frame}
+
 
 
 \end{document} 

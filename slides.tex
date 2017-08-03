@@ -160,7 +160,7 @@ id :: a -> a
 
 
 \begin{frame}[fragile]
-\frametitle{Ad-hoc polymorphism}
+%\frametitle{Ad-hoc polymorphism}
 
 % TODO make a joke here about "ad-hocly"
 A type which is ad-hocly polymorphic can be instantiated to different types,
@@ -234,6 +234,20 @@ We can add type class instances for types we didn't write
 \end{frame}
 
 
+\begin{frame}
+
+Advantages
+
+\begin{itemize}
+\item Writing an instance for your type can unlock many functions
+\item Writing functions with typeclass constraints is easy
+\item You can write instances for types you did not write
+\item Instances can depend on other instances if necessary
+\end{itemize}
+
+\end{frame}
+
+
 %%%%%
 %%%%% INTERFACES SECTION
 %%%%%
@@ -281,8 +295,91 @@ static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[fragile]
+\begin{javacode}
+class String {
+  private char[] value;
+  // other definitions
+}
+\end{javacode}
+\end{frame}
 
+
+\begin{frame}[fragile]
+\begin{javacode}
+class String implements Equal<String> {
+  private char[] value;
+  // other definitions
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> {
+  // implementation details
+
+
+
+
+
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> extends Equal<List<A>> {
+  // implementation details
+
+
+
+
+
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> extends Equal<List<A>> {
+  // implementation details
+
+  public boolean eq(List<A> other) {
+    // implementation...
+
+  }
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+class List<A> extends Equal<List<A>> {
+  // implementation details
+
+  public boolean eq(List<A> other) {
+    // implementation...
+    // ... but how do we compare A for equality?
+  }
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}
+\begin{itemize}
+\item Interface implementation can't be conditional
+\item We can only implement interfaces for types we control
+\end{itemize}
+
+\nl
+
+I argue this makes type classes more modular and more flexible
 \end{frame}
 
 
@@ -296,6 +393,11 @@ static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
 \huge{Implicits}
 \end{center}
 \end{frame}
+
+
+\begin{frame}
+\end{frame}
+
 
 \end{document} 
 

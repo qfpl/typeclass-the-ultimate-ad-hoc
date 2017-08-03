@@ -59,7 +59,9 @@ Data61/CSIRO\\ % Your institution for the title page
 \begin{document}
 
 
-%%% Intro section
+%%%%%
+%%%%% Intro section
+%%%%%
 
 
 \begin{frame}
@@ -90,13 +92,9 @@ or sometimes a design pattern
 \end{frame}
 
 
-\begin{frame}
-Let's go beyond the basics of type classes
-\end{frame}
-
-
-%%% Polymorphism
-
+%%%%%
+%%%%% Polymorphism
+%%%%%
 
 \begin{frame}
 \begin{center}
@@ -106,14 +104,19 @@ Let's go beyond the basics of type classes
 
 
 \begin{frame}
+A type is {\it polymorphic} iff it can be applied at multiple types.
+% TODO better definition?
+\end{frame}
+
+
+\begin{frame}
 \begin{center}
 Polymorphism is good
 
 
 \begin{itemize}
-\item greater reuse
 \item less repetition
-\item fewer names need inventing
+\item greater reuse
 \item fewer possible implementations
 \end{itemize}
 \end{center}
@@ -132,18 +135,18 @@ Broadly speaking there are two major forms of polymorphism:
 
 \begin{frame}[fragile]
 
-\frametitle{Parametric polymorphism (sometimes called {\it generics})}
+%\frametitle{Parametric polymorphism (sometimes called {\it generics})}
 
 % TODO clarify or correct this slide
-A value is parametrically polymorphic iff it has at least one {\it type parameter}
+A type is {\tt parametrically polymorphic} iff it has at least one {\it type parameter}
 which can be instantiated to {\it any type}.
 
-\nl
+%\nl
 
-Parametrically polymorphic functions behave the same way no matter which type
-they are instantiated to.
+%Parametrically polymorphic functions behave the same way no matter which type
+%they are instantiated to.
 
-\pnl
+%\pnl
 
 \begin{haskellcode}
 reverse :: [a] -> [a]
@@ -157,6 +160,7 @@ id :: a -> a
 \begin{frame}[fragile]
 \frametitle{Ad-hoc polymorphism}
 
+% TODO make a joke here
 A value which is ad-hocly polymorphic can be instantiated to different types,
 
 and may behave differently at each type
@@ -164,83 +168,9 @@ and may behave differently at each type
 \end{frame}
 
 
-\begin{frame}[fragile]
-
-\begin{haskellcode}
-(==) :: Eq a => a -> a -> Bool
-\end{haskellcode}
-
-\pnl
-
-\begin{haskellcode}
-eqBool :: Bool -> Bool -> Bool
-eqBool True True   = True
-eqBool False False = True
-eqBool False True  = False
-eqBool True False  = False
-\end{haskellcode}
-
-\pnl
-
-\begin{haskellcode}
-eqString :: String -> String -> Bool
-eqString []      []     = True
-eqString (_: _)  []     = False
-eqString []      (_: _) = False
-eqString (c:cs)  (d:ds) = eqChar c d && eqString cs ds
-\end{haskellcode}
-
-\end{frame}
-
-
-\begin{frame}
-\begin{center}
-\huge{Interfaces}
-\end{center}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-public interface Equal<A> {
-  public boolean eq(A other);
-}
-\end{javacode}
-
-\pause
-
-\begin{javacode}
-public class Person implements Equal<Person> {
-  public int age;
-  public String name;
-
-  public boolean eq(Person other) {
-    return this.age == other.age && this.name.equals(other.name);
-  }
-}
-\end{javacode}
-\end{frame}
-
-
-
-\begin{frame}[fragile]
-\begin{javacode}
-import java.util.List;
-
-public class EqualMethods {
-  public static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
-    for (A element : list) {
-      if (a.eq(element)) return true;
-    }
-    return false;
-  }
-}
-\end{javacode}
-
-elementOf exhibits ad-hoc polymorphism
-
-\end{frame}
-
+%%%%%
+%%%%% WHATE ARE TYPE CLASSES
+%%%%%
 
 \begin{frame}
 \begin{center}
@@ -282,4 +212,56 @@ elementOf a list = any (eq a) list
 \end{frame}
 
 
+%%%%%
+%%%%% INTERFACES SECTION
+%%%%%
+
+
+\begin{frame}
+\begin{center}
+\huge{Interfaces}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+interface Equal<A> {
+  public boolean eq(A other);
+}
+\end{javacode}
+
+\pause
+
+\begin{javacode}
+class Person implements Equal<Person> {
+  public int age;
+  public String name;
+
+  public boolean eq(Person other) {
+    return this.age == other.age && this.name.equals(other.name);
+  }
+}
+\end{javacode}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+public static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
+  for (A element : list) {
+    if (a.eq(element)) return true;
+  }
+  return false;
+}
+\end{javacode}
+
+%\nl
+%elementOf exhibits ad-hoc polymorphism
+
+\end{frame}
+
+
 \end{document} 
+

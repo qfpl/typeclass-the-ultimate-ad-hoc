@@ -13,3 +13,5 @@
 *.class
 /_minted-slides/
 *-converted-to.pdf
+target/
+

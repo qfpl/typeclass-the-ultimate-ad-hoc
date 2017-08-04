@@ -5,6 +5,8 @@
 %\usetheme{default}
 \usetheme{Madrid}
 
+% TODO make background not white for BFPG
+
 \setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
 
 \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
@@ -77,18 +79,15 @@ Type classes are a language feature
 
 \begin{itemize}
 \item Haskell
-\item Eta
 \item Purescript
+\item Eta
 \item Clean
 \end{itemize}
-
-\pause
 
 or sometimes a design pattern
 
 \begin{itemize}
 \item Scala
-\item OCaml
 \end{itemize}
 
 \end{frame}
@@ -106,8 +105,9 @@ or sometimes a design pattern
 
 
 \begin{frame}
-A type is {\it polymorphic} iff it can be applied at multiple types.
-% TODO better definition?
+
+Something which is {\it polymorhpic} has many shapes
+
 \end{frame}
 
 
@@ -126,7 +126,7 @@ Polymorphism is good
 
 
 \begin{frame}
-Broadly speaking there are two major forms of polymorphism:
+Broadly speaking there are two major forms of polymorphism in programming:
 
 \begin{itemize}
 \item {\it parametric} polymorphism
@@ -137,13 +137,10 @@ Broadly speaking there are two major forms of polymorphism:
 
 \begin{frame}[fragile]
 
-%\frametitle{Parametric polymorphism (sometimes called {\it generics})}
-
-% TODO clarify or correct this slide
-A type is {\tt parametrically polymorphic} iff it has at least one {\it type parameter}
+A {\tt parametrically polymorphic} type has at least one {\it type parameter}
 which can be instantiated to {\it any type}.
 
-%\nl
+\nl
 
 %Parametrically polymorphic functions behave the same way no matter which type
 %they are instantiated to.
@@ -160,7 +157,6 @@ id :: a -> a
 
 
 \begin{frame}[fragile]
-%\frametitle{Ad-hoc polymorphism}
 
 % TODO make a joke here about "ad-hocly"
 A type which is ad-hocly polymorphic can be instantiated to different types,
@@ -388,8 +384,6 @@ We can add type class instances for types we didn't write
 \begin{frame}
 
 \begin{itemize}
-\item Writing an instance for your type can unlock many functions
-\item Writing functions with typeclass constraints is easy
 \item You can write instances for types you did not write
 \item Instances can depend on other instances if necessary
 \end{itemize}
@@ -397,11 +391,69 @@ We can add type class instances for types we didn't write
 \end{frame}
 
 
-\begin{frame}
-% TODO
-talk about where instances are allowed to be
+\begin{frame}[fragile]
 
-talk about orphan instances
+There are exactly two places a type class instance is allowed to exist
+
+\nl
+
+\begin{columns}
+\begin{column}[T]{0.49\textwidth}
+\begin{block}{\tt List.hs}
+\begin{haskellcode}
+data [a] = []
+         | (a:[a])
+\end{haskellcode}
+\end{block}
+\end{column}
+\begin{column}{0.02\textwidth}
+\end{column}
+\begin{column}[T]{0.49\textwidth}
+\begin{block}{\tt Equal.hs}
+\begin{haskellcode}
+class Equal a where
+  eq :: a -> a -> Bool
+
+instance Equal [a] where
+  eq = ...
+\end{haskellcode}
+\end{block}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+
+There are exactly two places a type class instance is allowed to exist
+
+\nl
+
+\begin{columns}
+\begin{column}[T]{0.49\textwidth}
+\begin{block}{\tt List.hs}
+\begin{haskellcode}
+data [a] = []
+         | (a:[a])
+
+instance Equal [a] where
+  eq = ...
+\end{haskellcode}
+\end{block}
+\end{column}
+\begin{column}{0.02\textwidth}
+\end{column}
+\begin{column}[T]{0.49\textwidth}
+\begin{block}{\tt Equal.hs}
+\begin{haskellcode}
+class Equal a where
+  eq :: a -> a -> Bool
+\end{haskellcode}
+\end{block}
+\end{column}
+\end{columns}
+
 \end{frame}
 
 
@@ -413,13 +465,17 @@ TODO show why type classes aren't perfectly flexible
 \end{frame}
 
 %%%%%
-%%%%% SCALA SECTION
+%%%%% IMPLICITS (SCALA) SECTION
 %%%%%
 
 
 \begin{frame}
 \begin{center}
-\huge{Implicits}
+\Huge{Implicits}
+
+\nl
+
+\large{{\it More Flexible Than Typeclasses}\texttrademark}
 \end{center}
 \end{frame}
 

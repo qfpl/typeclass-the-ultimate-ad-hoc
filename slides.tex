@@ -751,6 +751,32 @@ def emptySet[A]: Set[A]
 def insert[A](a: A, set: Set[A])(implicit o: Order[A]): Set[A]
 
 def union[A](s1: Set[A], s2: Set[A])(implicit o: Order[A]): Set[A]
+
+def isElement[A](a: A, set: Set[A])(implicit o: Order[A]): Boolean
+\end{scalacode}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{block}{Persons.scala}
+\begin{scalacode}
+implicit def orderPersonByAge: Order[Person] = ...
+
+def persons: Set[Person] =
+  insert(p1, insert(p2, insert(p3, emptySet)))
+\end{scalacode}
+\end{block}
+
+\nl
+
+\begin{block}{Something.scala}
+\begin{scalacode}
+import Persons.persons
+
+implicit def orderPersonByName: Order[Person] = ...
+
+val x = isElement(p1, persons) // FALSE!
 \end{scalacode}
 \end{block}
 \end{frame}
@@ -777,12 +803,22 @@ What about implicits in external libraries?
 
 Type classes:
 \begin{itemize}
-\item Big wins in flexibility, expressiveness, and modularity compared to interfaces
+\item Big wins in flexibility, expressiveness, and modularity
 \item Restrictions are straightforward and compiler checked
 \item Coherence keeps things sane
 \end{itemize}
 \end{frame}
 
+
+\begin{frame}
+\begin{center}
+\Huge{Thanks for listening!}
+
+\nl
+
+\Large{Questions?}
+\end{center}
+\end{frame}
 
 \end{document} 
 

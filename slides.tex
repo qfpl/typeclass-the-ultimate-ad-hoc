@@ -106,7 +106,7 @@ or sometimes a design pattern
 
 \begin{frame}
 
-Something which is {\it polymorhpic} has many shapes
+Something which is {\it polymorphic} has many shapes
 
 \end{frame}
 
@@ -137,7 +137,7 @@ Broadly speaking there are two major forms of polymorphism in programming:
 
 \begin{frame}[fragile]
 
-A {\tt parametrically polymorphic} type has at least one {\it type parameter}
+A {\it parametrically polymorphic} type has at least one {\it type parameter}
 which can be instantiated to {\it any type}.
 
 \nl
@@ -147,10 +147,10 @@ which can be instantiated to {\it any type}.
 
 %\pnl
 
+Example:
+
 \begin{haskellcode}
 reverse :: [a] -> [a]
-id :: a -> a
-(.) :: (b -> c) -> (a -> b) -> (a -> c)
 \end{haskellcode}
 
 \end{frame}
@@ -159,9 +159,17 @@ id :: a -> a
 \begin{frame}[fragile]
 
 % TODO make a joke here about "ad-hocly"
-A type which is ad-hocly polymorphic can be instantiated to different types,
+An {\it ad-hocly polymorphic} type can be instantiated to some different types,
 
-and may behave differently at each type
+and may behave differently for each type
+
+\nl
+
+Example:
+
+\begin{javacode}
+==
+\end{javacode}
 
 \end{frame}
 
@@ -361,12 +369,6 @@ Instances can be constrained
 
 \nl
 
-%instance Equal a => Equal (Maybe a) where
-%  eq Nothing  Nothing  = True
-%  eq (Just x) (Just y) = True
-%  eq (Just x) Nothing  = False
-%  eq Nothing  (Just y) = False
-
 \begin{haskellcode}
 instance (Equal a) => Equal [a] where
   eq []     []     = True
@@ -385,7 +387,7 @@ We can add type class instances for types we didn't write
 
 \begin{itemize}
 \item You can write instances for types you did not write
-\item Instances can depend on other instances if necessary
+\item Instances can depend on other instances
 \end{itemize}
 
 \end{frame}
@@ -498,7 +500,7 @@ instance Equal Person where
 \begin{center}
 ``Orphan instance''
 
-Ophan instances break {\it type class coherence}
+Orphan instances break {\it type class coherence}
 \end{center}
 
 \end{frame}
@@ -600,14 +602,25 @@ implicit def equalList(implicit equalA: Equal[A]): Equal[List[A]] =
 \end{frame}
 
 
+\begin{frame}
+\begin{itemize}
+\item No restriction on orphan instances
+\item No restriction on number of instances
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}[fragile]
 \begin{scalacode}
 sealed trait Ordering
 case object LT extends Ordering
 case object EQ extends Ordering
 case object GT extends Ordering
+\end{scalacode}
 
+\pnl
 
+\begin{scalacode}
 trait Order[A] {
   def compare(a: A, b: A): Ordering
 }
@@ -668,7 +681,7 @@ Then the boss says ``I want those sorted by name''.
 \pnl
 
 \begin{scalacode}
-implicit def personOrderByName: Order[Person] = new Order[Person] {
+implicit def orderPersonByName: Order[Person] = new Order[Person] {
   def compare(a: Person, b: Person): Ordering =
     stringOrder.compare(a.name, b.name) match {
       case LT => LT
@@ -712,11 +725,15 @@ List(
 \begin{scalacode}
 // both in scope
 implicit def orderPerson: Order[Person] = ...
-implicit def personOrderByName: Order[Person] = ...
+implicit def orderPersonByName: Order[Person] = ...
 
 // what happens?
 sort(persons)
 \end{scalacode}
+
+\pnl
+
+Hopefully a compiler error!
 \end{frame}
 
 
@@ -726,21 +743,46 @@ sort(persons)
 % talk about applying discipline in scala to get coherence
 
 
+\begin{frame}[fragile]
+\begin{block}{Set.scala}
+\begin{scalacode}
+def emptySet[A]: Set[A]
+
+def insert[A](a: A, set: Set[A])(implicit o: Order[A]): Set[A]
+
+def union[A](s1: Set[A], s2: Set[A])(implicit o: Order[A]): Set[A]
+\end{scalacode}
+\end{block}
+\end{frame}
+
+
 \begin{frame}
 Recommendations when writing implicits:
 \begin{itemize}
 \item Only create instances in the file that defines the type or the ``type class''
-\item Disallow creating local instances (regardless of which file you're in)
+\item Disallow creating more than one instance (regardless of which file you're in)
 \end{itemize}
 
 \pnl
 
-Recommendations when working with implicits in external libraries:
+What about implicits in external libraries?
 \begin{itemize}
 \item Assess their usage of implicits. Do they use them as like type classes?
 \item If you distrust their implicits, pass everything of theirs explicitly
 \end{itemize}
 \end{frame}
+
+
+\begin{frame}
+
+Type classes:
+\begin{itemize}
+\item Big wins in flexibility, expressiveness, and modularity compared to interfaces
+\item Restrictions are straightforward and compiler checked
+\item Coherence keeps things sane
+\end{itemize}
+\end{frame}
+
 
 \end{document} 
 

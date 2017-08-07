@@ -11,6 +11,18 @@
 
 \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BACKGROUND COLOUR FOR BFPG
+% CHANGE THIS BEFORE COMPOSE
+\definecolor{cream}{RGB}{255, 255, 204}
+\setbeamercolor{background canvas}{bg=cream}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{hyperref}
@@ -512,16 +524,18 @@ Type class coherence gives many sane benefits:
 \begin{itemize}
 \item There can only be zero or one instance 
 \item Using an instance never depends on imports
-% TODO more here
+\item The semantics are what we expect
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-%TODO
-TODO show why type classes aren't perfectly flexible
+Type class coherence precludes:
 
-(no custom local instances, maybe show newtypes for sum and product or something)
+\begin{itemize}
+\item Custom local instances for quick things
+\item Multiple instances selectable by import
+\end{itemize}
 \end{frame}
 
 %%%%%
@@ -737,12 +751,6 @@ Hopefully a compiler error!
 \end{frame}
 
 
-% TODO
-
-% show Set example about incoherence doing nasty things quietly
-% talk about applying discipline in scala to get coherence
-
-
 \begin{frame}[fragile]
 \begin{block}{Set.scala}
 \begin{scalacode}
@@ -772,7 +780,7 @@ def persons: Set[Person] =
 
 \begin{block}{Something.scala}
 \begin{scalacode}
-import Persons.persons
+import Persons.{p1, persons}
 
 implicit def orderPersonByName: Order[Person] = ...
 

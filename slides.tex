@@ -168,7 +168,6 @@ reverse :: [a] -> [a]
 
 \begin{frame}[fragile]
 
-% TODO make a joke here about "ad-hocly"
 An {\it ad-hocly polymorphic} type can be instantiated to some different types,
 
 and may behave differently for each type
@@ -181,6 +180,34 @@ Example:
 ==
 \end{javacode}
 
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.5]{cromulent.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+``[\ldots] {\it exhibits} ad-hoc polymorphism''
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.7]{programmar1.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.8]{programmar2.png}
+\end{center}
 \end{frame}
 
 
@@ -403,6 +430,20 @@ We can add type class instances for types we didn't write
 \end{frame}
 
 
+\begin{frame}
+Type classes have restrictions in order to enforce {\it type class coherence}
+
+\nl
+
+Informally, coherence means:
+\begin{itemize}
+\item for a given type class for a given type, there is zero or one instance 
+\item no matter how you ask for an instance, you get the same one
+\item if an instance exists, you can't not get it
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}[fragile]
 
 There are exactly two places a type class instance is allowed to exist
@@ -510,30 +551,30 @@ instance Equal Person where
 \begin{center}
 ``Orphan instance''
 
-Orphan instances break {\it type class coherence}
+Orphan instances can break coherence
 \end{center}
 
 \end{frame}
 
 
 \begin{frame}
-Type class coherence gives many sane benefits:
+Type class coherence gives sane benefits:
 
 \begin{itemize}
-\item There can only be zero or one instance 
-\item Using an instance never depends on imports
+\item Instances never depends on imports
 \item The semantics are what we expect
 \end{itemize}
-\end{frame}
 
+\pnl
 
-\begin{frame}
 Type class coherence precludes:
 
 \begin{itemize}
-\item Custom local instances for quick things
+\item Custom local instances
 \item Multiple instances selectable by import
 \end{itemize}
+
+(But there are other solutions to those things)
 \end{frame}
 
 %%%%%
@@ -611,10 +652,9 @@ implicit def equalList(implicit equalA: Equal[A]): Equal[List[A]] =
 \item We can define implicits for types we did not write
 \item We can write implicits that depend on implicits
 \end{itemize}
-\end{frame}
 
+\pnl
 
-\begin{frame}
 \begin{itemize}
 \item No restriction on orphan instances
 \item No restriction on number of instances
@@ -817,14 +857,28 @@ Type classes:
 
 
 \begin{frame}
+
 \begin{center}
-\Huge{Thanks for listening!}
-
-\nl
-
-\Large{Questions?}
+{\Huge Thanks for listening!}
 \end{center}
+
+\begin{table}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Aspect                           & Interfaces & Type classes & Implicits \\
+\hline
+Instance types you control       & \checkmark & \checkmark & \checkmark     \\
+Instance types you don't control & X          & \checkmark & \checkmark     \\
+Instances can depend on other instances & X   & \checkmark & \checkmark     \\
+Type-directed                    & \checkmark & \checkmark & sort of        \\
+Custom local instances           & X          & X          & \checkmark     \\
+Coherent                         & \checkmark & \checkmark & X              \\
+\hline
+\end{tabular}
+\end{table}
+
 \end{frame}
+
 
 \end{document} 
 

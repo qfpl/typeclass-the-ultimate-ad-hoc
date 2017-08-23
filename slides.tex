@@ -10,17 +10,6 @@
 \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BACKGROUND COLOUR FOR BFPG
-% CHANGE THIS BEFORE COMPOSE
-\definecolor{cream}{RGB}{255, 255, 204}
-\setbeamercolor{background canvas}{bg=cream}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{hyperref}
@@ -231,6 +220,28 @@ interface Equal<A> {
 \end{javacode}
 
 \pause
+
+\begin{javacode}
+class Person {
+  public int age;
+  public String name;
+
+
+
+
+}
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
+interface Equal<A> {
+  public boolean eq(A other);
+}
+\end{javacode}
+
+
 
 \begin{javacode}
 class Person implements Equal<Person> {
@@ -675,7 +686,7 @@ trait Order[A] {
 \pnl
 
 \begin{scalacode}
-implicit def orderPerson: Order[Person] = new Order[Person] {
+implicit def joyDivisionWithoutIan = new Order[Person] {
   def compare(a: Person, b: Person): Ordering =
     intOrder.compare(a.age, b.age) match {
       case LT => LT
@@ -770,7 +781,7 @@ List(
 \begin{frame}[fragile]
 \begin{scalacode}
 // both in scope
-implicit def orderPerson: Order[Person] = ...
+implicit def orderPersonByAge: Order[Person] = ...
 implicit def orderPersonByName: Order[Person] = ...
 
 // what happens?
@@ -780,6 +791,15 @@ sort(persons)
 \pnl
 
 Hopefully a compiler error!
+\end{frame}
+
+
+\begin{frame}
+\begin{Huge}
+\begin{center}
+$\{1,2,3\} \cup \{4,5,6\}$
+\end{center}
+\end{Huge}
 \end{frame}
 
 

@@ -6,6 +6,7 @@
 *.aux
 *.nav
 *.snm
+*.swp
 *.bbl
 *.blg
 *.vrb

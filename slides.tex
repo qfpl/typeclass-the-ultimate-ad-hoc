@@ -293,23 +293,16 @@ class String implements Equal<String> {
 \end{frame}
 
 
-\begin{frame}[fragile]
-\begin{javacode}
-class List<A> {
-  // implementation details
-
-
-
-
-
-}
-\end{javacode}
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.5]{list.pdf}
+\end{center}
 \end{frame}
 
 
 \begin{frame}[fragile]
 \begin{javacode}
-class List<A> implements Equal<List<A>> {
+class List<A> {
   // implementation details
 
 
@@ -332,6 +325,28 @@ class List<A> implements Equal<List<A>> {
   }
 }
 \end{javacode}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.5]{listcompare1.pdf}
+\end{center}
+\end{frame}
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.5]{listcompare2.pdf}
+\end{center}
+\end{frame}
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.5]{listcompare3.pdf}
+\end{center}
+\end{frame}
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.5]{listcompare4.pdf}
+\end{center}
 \end{frame}
 
 
@@ -427,9 +442,18 @@ We can add type class instances for types we didn't write
 
 \begin{frame}
 
+Some benefits:
 \begin{itemize}
 \item You can write instances for types you did not write
 \item Instances can depend on other instances
+\end{itemize}
+
+\nl
+
+Compared to Interfaces:
+\begin{itemize}
+\item More expressive
+\item More modular
 \end{itemize}
 
 \end{frame}
@@ -563,20 +587,21 @@ Orphan instances can break coherence
 
 
 \begin{frame}
-Type class coherence gives sane benefits:
+Type class coherence benefits sanity:
 
 \begin{itemize}
-\item Instances never depends on imports
-\item The semantics are what we expect
+\item When you use a type class, the thing you expect happens
+\item Instances never depends on imports or ordering
+\item ``plumbing'' is done behind the scenes and can't go wrong
 \end{itemize}
 
 \pnl
 
-Type class coherence precludes:
+Type class coherence rules out:
 
 \begin{itemize}
 \item Custom local instances
-\item Multiple instances selectable by import
+\item Multiple, selectable instances
 \end{itemize}
 
 (But there are other solutions to those things)

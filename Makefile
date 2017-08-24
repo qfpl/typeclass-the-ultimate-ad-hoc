@@ -26,5 +26,5 @@ edit: $(SLIDES_TEX)
 o: open
 
 clean:
-	rm -rf *.pdf *.loc *.toc *.log *.idx *.aux *.out *.nav *.snm *.vrb *.blg *.bbl
+	rm -rf $(SLIDES_PDF) *.loc *.toc *.log *.idx *.aux *.out *.nav *.snm *.vrb *.blg *.bbl
 

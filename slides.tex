@@ -745,7 +745,7 @@ sort(
   List(
     Person(30, "Robert")
   , Person(20, "John")
-  , Person(40, "Alfred")
+  , Person(30, "Alfred")
   )
 )
 \end{scalacode}
@@ -757,8 +757,8 @@ sort(
 
 List(
   Person(20, "John")
+, Person(30, "Alfred")
 , Person(30, "Robert")
-, Person(40, "Alfred")
 )
 \end{scalacode}
 \end{frame}
@@ -790,7 +790,7 @@ sort(
   List(
     Person(30, "Robert")
   , Person(20, "John")
-  , Person(40, "Alfred")
+  , Person(30, "Alfred")
   )
 )
 \end{scalacode}
@@ -801,7 +801,7 @@ sort(
 ==>
 
 List(
-  Person(40, "Alfred")
+  Person(30, "Alfred")
 , Person(20, "John")
 , Person(30, "Robert")
 )
@@ -842,9 +842,31 @@ def emptySet[A]: Set[A]
 
 def insert[A](a: A, set: Set[A])(implicit o: Order[A]): Set[A]
 
-def union[A](s1: Set[A], s2: Set[A])(implicit o: Order[A]): Set[A]
-
 def isElement[A](a: A, set: Set[A])(implicit o: Order[A]): Boolean
+\end{scalacode}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{block}{Persons.scala}
+\begin{scalacode}
+implicit def orderPersonByAge: Order[Person] = ...
+
+def persons: Set[Person] =
+  insert(p1, insert(p2, insert(p3, emptySet)))
+\end{scalacode}
+\end{block}
+
+\pnl
+
+\begin{block}{Something.scala}
+\begin{scalacode}
+import Persons.{p1, persons}
+
+implicit def orderPersonByName: Order[Person] = ...
+
+val x = isElement(p1, persons)
 \end{scalacode}
 \end{block}
 \end{frame}

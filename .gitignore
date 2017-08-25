@@ -12,6 +12,8 @@
 *.vrb
 *.pyg
 *.class
+*.o
+*.hi
 /_minted-slides/
 *-converted-to.pdf
 target/

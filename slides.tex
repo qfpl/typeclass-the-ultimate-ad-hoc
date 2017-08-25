@@ -271,6 +271,13 @@ static <A extends Equal<A>> boolean elementOf(A a, List<A> list) {
 
 \begin{frame}[fragile]
 \begin{javacode}
+                        "hello".eq("he11o")
+\end{javacode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{javacode}
 package java.lang;
 
 class String {
@@ -881,6 +888,43 @@ What about implicits in external libraries?
 \item Assess their usage of implicits. Do they use them as like type classes?
 \item If you distrust their implicits, pass everything of theirs explicitly
 \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{center}
+{\Huge \tt
+:)
+}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\small{
+\begin{verbatim}
+D.hs:11:10: error:
+    Duplicate instance declarations:
+      instance Ord Person -- Defined at D.hs:11:10
+      instance Ord Person -- Defined at D.hs:14:10
+\end{verbatim}
+}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\scriptsize{
+\begin{verbatim}
+O3.hs:6:1: warning: [-Worphans]
+    Orphan instance: instance Equal Person
+    To avoid this
+        move the instance declaration to the module of the class or of the type, or
+        wrap the type with a newtype and declare the instance on the new type.
+
+<no location info>: error: 
+Failing due to -Werror.
+\end{verbatim}
+}
 \end{frame}
 
 

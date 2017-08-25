@@ -1,0 +1,26 @@
+ad-hoc 3:30
+* mention operator overloading
+
+interfaces 5:30
+
+linked list
+* missed cue
+
+typeclasses 10:30
+
+coherence = no surprises
+* works or fails to compile
+
+implicits 18:00
+* maybe use IList for scalaz reference
+
+Person
+* two persons with same age for better example
+
+Scala
+* Can't tell which implicits are in scope just by looking at one file
+
+:) 27:00
+
+Fin 28:35
+
